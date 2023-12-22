@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Linker</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-dark text-white">
+
+    <div class="container mt-4">
+        <h2 class="text-success">Number Linker</h2>
+
+        <div class="form-group">
+            <label for="regionCode">Enter Region Code:</label>
+            <input type="text" class="form-control" id="regionCode" placeholder="e.g., +91">
+        </div>
+
+        <div class="form-group">
+            <label for="numbers">Enter Numbers (one per line):</label>
+            <textarea class="form-control" id="numbers" rows="4"></textarea>
+        </div>
+
+        <button class="btn btn-success" onclick="generateLinks()">Generate Links</button>
+
+        <div id="result" class="mt-4"></div>
+    </div>
+
+    <script>
+        function generateLinks() {
+            var regionCode = document.getElementById('regionCode').value;
+            var numbers = document.getElementById('numbers').value.split('\n');
+
+            var resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = ''; // Clear previous results
+
+            var table = document.createElement('table');
+            table.className = 'table table-bordered table-dark mt-4';
+
+            var thead = document.createElement('thead');
+            var tbody = document.createElement('tbody');
+
+            var headerRow = document.createElement('tr');
+            var th1 = document.createElement('th');
+            th1.textContent = 'Number';
+            var th2 = document.createElement('th');
+            th2.textContent = 'Link';
+            headerRow.appendChild(th1);
+            headerRow.appendChild(th2);
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+
+            numbers.forEach(function(number) {
+                if (number.trim() !== '') {
+                    var link = document.createElement('a');
+                    link.href = "https://wa.me/" + regionCode + number.trim();
+                    link.textContent = "https://wa.me/" + regionCode + number.trim();
+                    link.target = "_blank"; // Open link in a new tab
+
+                    var td1 = document.createElement('td');
+                    td1.textContent = number.trim();
+
+                    var td2 = document.createElement('td');
+                    td2.appendChild(link);
+
+                    var tr = document.createElement('tr');
+                    tr.appendChild(td1);
+                    tr.appendChild(td2);
+
+                    tbody.appendChild(tr);
+                }
+            });
+
+            table.appendChild(tbody);
+            resultDiv.appendChild(table);
+        }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+</body>
+</html>
