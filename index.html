@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Number Linker</title>
+    <title>Whatsapp Me Generator</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-dark text-white">
 
     <div class="container mt-4">
-        <h2 class="text-success">Number Linker</h2>
+        <h2 class="text-success">Whatsapp Me Generator</h2>
 
         <div class="form-group">
             <label for="regionCode">Enter Region Code:</label>
@@ -21,7 +21,8 @@
             <textarea class="form-control" id="numbers" rows="4"></textarea>
         </div>
 
-        <button class="btn btn-success" onclick="generateLinks()">Generate Links</button>
+        <button class="btn btn-success mr-2" onclick="generateLinks()">Generate Links</button>
+        <button class="btn btn-secondary" onclick="clearFields()">Clear</button>
 
         <div id="result" class="mt-4"></div>
     </div>
@@ -73,6 +74,12 @@
 
             table.appendChild(tbody);
             resultDiv.appendChild(table);
+        }
+
+        function clearFields() {
+            document.getElementById('regionCode').value = '';
+            document.getElementById('numbers').value = '';
+            document.getElementById('result').innerHTML = '';
         }
     </script>
 
