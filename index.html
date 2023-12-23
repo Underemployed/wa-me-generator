@@ -1,11 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Whatsapp Me Generator</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        table {
+            text-align: center;
+        }
+
+        th,
+        td {
+            vertical-align: middle !important;
+        }
+        .link .highlighted-row{
+            text-decoration: none;
+        }
+        .custom-checkbox {
+            transform: scale(1.5);
+        }
+
+        .table {
+            margin-bottom: 20px;
+        }
+
+        .highlighted-row {
+            background-color: #3498db;
+            /* Blue background color */
+            color: white;
+            /* White text color */
+        }
+    </style>
 </head>
+
 <body class="bg-dark text-white">
 
     <div class="container mt-4">
@@ -13,12 +42,13 @@
 
         <div class="form-group">
             <label for="regionCode">Enter Region Code:</label>
-            <input type="text" class="form-control" id="regionCode" placeholder="e.g., +91">
+            <input type="text" class="form-control" id="regionCode" placeholder="e.g., +91" value="+91">
         </div>
 
         <div class="form-group">
             <label for="numbers">Enter Numbers (one per line):</label>
-            <textarea class="form-control" id="numbers" rows="4"></textarea>
+            <textarea class="form-control" id="numbers" rows="4"
+                placeholder="Enter phone numbers here e.g.>&#10;1234567890&#10;9876543210&#10;etc"></textarea>
         </div>
 
         <button class="btn btn-success mr-2" onclick="generateLinks()">Generate Links</button>
@@ -43,19 +73,25 @@
 
             var headerRow = document.createElement('tr');
             var th1 = document.createElement('th');
-            th1.textContent = 'Number';
+            th1.textContent = 'Mobile Number';
             var th2 = document.createElement('th');
             th2.textContent = 'Link';
+            var th3 = document.createElement('th');
+            th3.textContent = 'Sent';
             headerRow.appendChild(th1);
             headerRow.appendChild(th2);
+            headerRow.appendChild(th3);
             thead.appendChild(headerRow);
             table.appendChild(thead);
 
-            numbers.forEach(function(number) {
+            numbers.forEach(function (number) {
                 if (number.trim() !== '') {
+                    // Remove spaces from the number
+                    var cleanedNumber = number.replace(/\s/g, '');
+
                     var link = document.createElement('a');
-                    link.href = "https://wa.me/" + regionCode + number.trim();
-                    link.textContent = "https://wa.me/" + regionCode + number.trim();
+                    link.href = "https://wa.me/" + regionCode + cleanedNumber;
+                    link.textContent = "https://wa.me/" + regionCode + cleanedNumber;
                     link.target = "_blank"; // Open link in a new tab
 
                     var td1 = document.createElement('td');
@@ -64,9 +100,16 @@
                     var td2 = document.createElement('td');
                     td2.appendChild(link);
 
+                    var td3 = document.createElement('td');
+                    var checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.className = 'custom-checkbox';
+                    td3.appendChild(checkbox);
+
                     var tr = document.createElement('tr');
                     tr.appendChild(td1);
                     tr.appendChild(td2);
+                    tr.appendChild(td3);
 
                     tbody.appendChild(tr);
                 }
@@ -74,6 +117,19 @@
 
             table.appendChild(tbody);
             resultDiv.appendChild(table);
+
+            // highlighting
+            var checkboxes = document.querySelectorAll('.custom-checkbox');
+            checkboxes.forEach(function (checkbox) {
+                checkbox.addEventListener('change', function () {
+                    var row = this.closest('tr');
+                    if (this.checked) {
+                        row.classList.add('highlighted-row');
+                    } else {
+                        row.classList.remove('highlighted-row');
+                    }
+                });
+            });
         }
 
         function clearFields() {
@@ -88,4 +144,5 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
 </body>
+
 </html>
