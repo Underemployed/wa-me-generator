@@ -10,6 +10,10 @@
         table {
             text-align: center;
         }
+        body {
+        font-family: 'Arial', sans-serif;
+        }
+
 
         th,
         td {
@@ -22,10 +26,6 @@
             transform: scale(1.5);
         }
 
-        .table {
-            margin-bottom: 20px;
-        }
-
         .highlighted-row {
             background-color: #3498db;
             /* Blue background color */
@@ -34,7 +34,6 @@
         }
     </style>
 </head>
-
 <body class="bg-dark text-white">
 
     <div class="container mt-4">
@@ -42,16 +41,20 @@
 
         <div class="form-group">
             <label for="regionCode">Enter Region Code:</label>
-            <input type="text" class="form-control" id="regionCode" placeholder="e.g.+91 for India or +1 for US" value="+91">
+            <input type="text" class="form-control" id="regionCode" placeholder="eg. +91 for India or +1 for US" value="+91">
         </div>
 
         <div class="form-group">
             <label for="numbers">Enter Numbers (one per line):</label>
-            <textarea class="form-control" id="numbers" rows="4"
-                placeholder="1234567890&#10;9876543210&#10;99999XXXXX&#10;etc"></textarea>
+            <textarea class="form-control" inputmode="tel" id="numbers" rows="4" placeholder="eg.&#101234567890&#10;9876543210&#10;99999XXXXX&#10;etc"></textarea>
         </div>
 
-        <button class="btn btn-success mr-2" onclick="generateLinks()">Generate Links</button>
+        <div class="form-group">
+            <label for="optionalMessage">Enter Custom Message(optional):</label>
+            <input type="text" class="form-control" id="optionalMessage" placeholder="eg. Hello, I have a question about your service. Can you please help me?">
+        </div>
+
+        <button class="btn btn-success mr-2" onclick="generateLinks()">Generate Now</button>
         <button class="btn btn-secondary" onclick="clearFields()">Clear</button>
 
         <div id="result" class="mt-4"></div>
@@ -61,6 +64,7 @@
         function generateLinks() {
             var regionCode = document.getElementById('regionCode').value;
             var numbers = document.getElementById('numbers').value.split('\n');
+            var optionalMessage = document.getElementById('optionalMessage').value;
 
             var resultDiv = document.getElementById('result');
             resultDiv.innerHTML = ''; // Clear previous results
@@ -86,13 +90,15 @@
 
             numbers.forEach(function (number) {
                 if (number.trim() !== '') {
-                    // Remove spaces from the number
                     var cleanedNumber = number.replace(/\s/g, '');
 
                     var link = document.createElement('a');
-                    link.href = "https://wa.me/" + regionCode + cleanedNumber;
-                    link.textContent = "https://wa.me/" + regionCode + cleanedNumber;
-                    link.target = "_blank"; // Open link in a new tab
+                    var linkHref = "https://wa.me/" + regionCode + cleanedNumber;
+                    if (optionalMessage.trim() !== '') {
+                        linkHref += "?text=" + optionalMessage;
+                    }
+                    link.href = linkHref;
+                    link.textContent = linkHref.slice(0, 27);                    link.target = "_blank";
 
                     var td1 = document.createElement('td');
                     td1.textContent = number.trim();
@@ -135,6 +141,7 @@
         function clearFields() {
             document.getElementById('regionCode').value = '';
             document.getElementById('numbers').value = '';
+            document.getElementById('optionalMessage').value = '';
             document.getElementById('result').innerHTML = '';
         }
     </script>
